@@ -53,7 +53,7 @@ LinkNest is packed with features designed for power users who demand organizatio
 
 ## Installation
 
-**Manual Installation**:
+1.  **Manual Installation**:
       * Download the latest release `.zip` file from the [GitHub Releases](https://github.com/joyaljms98/Chrome_extensions) page.
       * Unzip the file.
       * Open Chrome and navigate to `chrome://extensions`.
