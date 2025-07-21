@@ -169,10 +169,4 @@ LinkNest was created by **Joyal James**, a passionate developer from Kerala, Ind
 
 ## Contributing
 
-Contributions, issues, and feature requests are welcome\! Feel free to check the [issues page](https://www.google.com/search?q=https://github.com/joyal-james) to see if your suggestion has already been submitted.
-
------
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](https://www.google.com/search?q=LICENSE) file for details.
+Contributions, issues, and feature requests are welcome\! Feel free to contact me via [Email](mailto:joyaljms98@gmail.com). Just put the tag #LinkNotes with it. Thankyou.
