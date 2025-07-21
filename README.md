@@ -22,17 +22,17 @@ LinkNest is a powerful browser extension designed to replace the native bookmark
 
 ### Table of Contents
 
-  * [Key Features](https://www.google.com/search?q=%23key-features)
-  * [Installation](https://www.google.com/search?q=%23installation)
-  * [How to Use](https://www.google.com/search?q=%23how-to-use)
-  * [Changelog](https://www.google.com/search?q=%23changelog)
-  * [About the Developer](https://www.google.com/search?q=%23about-the-developer)
-  * [Contributing](https://www.google.com/search?q=%23contributing)
-  * [License](https://www.google.com/search?q=%23license)
+* [Key Features](#key-features)
+* [Installation](#installation)
+* [How to Use](#how-to-use)
+* [Changelog](#changelog)
+* [About the Developer](#about-the-developer)
+* [Contributing](#contributing)
+* [License](#license)
 
 -----
 
-## Key Features
+## Key Features <!-- # key-features -->
 
 LinkNest is packed with features designed for power users who demand organization and efficiency.
 
