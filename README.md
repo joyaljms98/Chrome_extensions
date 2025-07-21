@@ -1,12 +1,10 @@
-# Chrome_extensions
-Some useful extensions for browsers
-
 -----
 
 <div align="center">
 
 <img src="https://raw.githubusercontent.com/joyaljms98/Chrome_extensions/refs/heads/Joyal's-Repository-default-branch/icons/icon128.png" alt="LinkNest Logo" width="120">
 </div align="center">
+
 # LinkNest - Bookmark Manager
 
 **A modern, feature-rich bookmark manager to save, categorize, and annotate your digital world.**
