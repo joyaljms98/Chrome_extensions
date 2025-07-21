@@ -5,7 +5,7 @@ Some useful extensions for browsers
 
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/joyal-james/LinkNest/main/icons/icon128.png" alt="LinkNest Logo" width="120">
+<img src="[https://raw.githubusercontent.com/joyal-james/LinkNest/main/icons/icon128.png](https://github.com/joyaljms98/Chrome_extensions/blob/Joyal's-Repository-default-branch/icons/icon128.png?raw=true)" alt="LinkNest Logo" width="120">
 
 # LinkNest - Bookmark Manager
 
