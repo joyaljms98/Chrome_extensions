@@ -162,8 +162,8 @@ A detailed history of the features added to LinkNest.
 
 LinkNest was created by **Joyal James**, a passionate developer from Kerala, India, dedicated to building tools that enhance productivity and organization on the web.
 
-  * Connect and explore other projects on [**GitHub**](https://www.google.com/search?q=https://github.com/joyal-james).
-  * If you find LinkNest useful, consider supporting its development by [**Buying Me a Coffee**](https://www.google.com/search?q=https://www.buymeacoffee.com/joyaljames).
+  * Connect and explore other projects on [**GitHub**](https://github.com/joyaljms98).
+  * If you find LinkNest useful, consider supporting its development by [**Buying Me a Coffee**](https://buymeacoffee.com/joyaljms98i).
 
 -----
 
