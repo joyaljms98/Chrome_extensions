@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LinkNest - Bookmark Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="options-page">
+    <header>
+    <div class="header-left-section">
+        <button id="toggle-left-panel-btn" title="Toggle Category Panel">☰</button>
+        <div class="title-wrapper">
+            <h1>LinkNest Manager</h1>
+            <div class="about-popover">
+                <p class="dev-name">Joyal James</p>
+                <p>Made with ❤️ from India</p>
+            </div>
+        </div>
+    </div>
+    <div class="menu">
+        <div class="search-wrapper">
+            <input type="search" id="search-input" placeholder="Search links & notes...">
+            <button id="search-btn" title="Search">🔍</button>
+        </div>
+        <div class="data-options-container">
+             <button id="data-options-btn">Data Options ▾</button>
+             <div id="data-options-popup" class="popup-menu">
+                <button id="backup-btn">Backup Data</button>
+                <button id="restore-btn">Restore Data</button>
+            </div>
+        </div>
+        <input type="file" id="restore-input" accept=".json" style="display: none;">
+        <button id="toggle-theme-btn">Toggle Theme</button>
+    </div>
+    </header>
+    <div class="main-container" id="main-container">
+        <div class="panel panel-left">
+            <div class="panel-header">
+                <div class="add-category-controls">
+                    <input type="text" id="new-category-input" placeholder="New category name...">
+                    <button id="add-category-btn" title="Add Category">➕</button>
+                </div>
+                <input type="search" id="category-search-input" placeholder="Search categories...">
+                <div id="category-sorting-controls">
+                    <label for="category-sort-select">Sort by:</label>
+                    <select id="category-sort-select">
+                        <option value="alpha-asc">Name (A-Z)</option>
+                        <option value="alpha-desc">Name (Z-A)</option>
+                        <option value="created-newest">Date Created (Newest)</option>
+                        <option value="created-oldest">Date Created (Oldest)</option>
+                        <option value="modified-newest">Date Modified (Newest)</option>
+                        <option value="modified-oldest">Date Modified (Oldest)</option>
+                    </select>
+                </div>
+            </div>
+            <ul id="category-list"></ul>
+            <div class="panel-footer-left">
+                <button id="about-btn">About LinkNest</button>
+            </div>
+        </div>
+
+        <div class="resizer" id="resizer-left"></div>
+
+        <div class="panel panel-center">
+             <div class="panel-header">
+                <div class="header-row">
+                    <input type="text" id="paste-link-input" placeholder="Paste a link here and press Enter">
+                    <div id="selection-controls-container">
+                        <button id="select-mode-btn">Select</button>
+                    </div>
+                </div>
+                <div id="sorting-controls" style="display: none;">
+                    <select id="sort-select">
+                        <option value="newest">Added (Newest First)</option>
+                        <option value="oldest">Added (Oldest First)</option>
+                        <option value="modified-newest">Modified (Newest First)</option>
+                        <option value="modified-oldest">Modified (Oldest First)</option>
+                        <option value="alpha">Alphabetically (A-Z)</option>
+                    </select>
+                </div>
+                 <div id="selection-actions" class="header-row" style="display: none;">
+                    <button id="select-all-btn">Select All</button>
+                    <button id="move-selected-btn">Move Selected...</button>
+                    <button id="delete-selected-btn" class="danger">Delete Selected</button>
+                    <button id="cancel-selection-btn">Cancel</button>
+                </div>
+            </div>
+            <div id="links-tree"></div>
+        </div>
+
+        <div class="resizer" id="resizer"></div>
+
+        <div class="panel panel-right">
+             <div class="panel-header">
+                <h3 id="notes-header">Notes</h3>
+                <button id="notes-view-toggle-btn" title="Toggle Markdown Preview">Preview</button>
+            </div>
+            <div id="notes-preview" class="notes-preview-area" style="display: none;"></div>
+            <textarea id="notes-editor" placeholder="Select a sub-link to edit notes..." disabled></textarea>
+            <div class="notes-footer">
+                <div class="zoom-controls">
+                    <label for="zoom-slider" title="Adjust font size">🔎</label>
+                    <input type="range" id="zoom-slider" min="70" max="180" value="100" step="1">
+                    <span id="zoom-value">100%</span>
+                    <button id="zoom-reset-btn" title="Reset Zoom">⟲</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="restore-modal-overlay">
+        <div class="modal-content">
+            <p>How would you like to restore from the backup file?</p>
+            <div class="modal-buttons">
+                <button id="restore-merge-btn">Merge</button>
+                <button id="restore-overwrite-btn">Overwrite</button>
+                <button id="restore-cancel-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <div id="move-modal-overlay">
+        <div class="modal-content">
+            <h3>Move Selected Links</h3>
+            <p>Choose a destination category or create a new one.</p>
+            <div class="move-modal-body">
+                <label for="move-category-select">Move to existing category:</label>
+                <select id="move-category-select"></select>
+                <p class="move-modal-or">- OR -</p>
+                <label for="move-new-category-input">Create a new category:</label>
+                <input type="text" id="move-new-category-input" placeholder="Add New category...">
+            </div>
+            <div class="modal-buttons">
+                <button id="move-confirm-btn">Move Links</button>
+                <button id="move-cancel-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <div id="about-modal-overlay">
+        <div class="modal-content about-modal-content">
+            <button class="close-modal-btn" id="about-modal-close-btn" title="Close">&times;</button>
+            <div class="about-modal-header">
+                <img src="icons/icon128.png" alt="LinkNest Logo" class="about-logo">
+                <h2>About LinkNest</h2>
+            </div>
+            <div class="about-modal-body">
+                <div class="developer-info">
+                    <img src="https://avatars.githubusercontent.com/u/75773527?v=4" alt="Developer" class="profile-pic">
+                    <h4>Developed by</h4><h3>Joyal James</h3>
+                    <p class="dev-bio">An MCA Student and a passionate developer from Kerala, India, creating tools to make the web a more organized place.</p>
+                </div>
+                <div class="project-details">
+                    <p><strong>Version:</strong> 13.2</p>
+                    <p><strong>Last Updated:</strong> July 21, 2025</p>
+                </div>
+                <div class="social-links">
+                    <a href="https://github.com/joyaljms98" target="_blank" class="social-link github" title="View project on GitHub">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg>
+                        <span>GitHub</span>
+                    </a>
+                    <a href="https://buymeacoffee.com/joyaljms98i" target="_blank" class="social-link bmc" title="Support the developer!">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.34,5.82a1,1,0,0,0-1.07-.13A8.44,8.44,0,0,1,16,6a1,1,0,0,0-1,1,6.56,6.56,0,0,1-2.7,5.54,1,1,0,0,0-.3.72V19a1,1,0,0,0,1,1h4a1,1,0,0,0,1-1V13.26a1,1,0,0,0-.3-.72A6.56,6.56,0,0,1,15,7a1,1,0,0,0-1-1,8.44,8.44,0,0,1-3.27-.31,1,1,0,0,0-1.07.13,1,1,0,0,0-.33.74,1,1,0,0,0,1,.84,10.2,10.2,0,0,0,3.54.43,8.56,8.56,0,0,0,3.34-.43,1,1,0,0,0,1-.84A1,1,0,0,0,20.34,5.82ZM2,19H7a1,1,0,0,0,1-1V8A1,1,0,0,0,7,7H2A1,1,0,0,0,1,8V18A1,1,0,0,0,2,19ZM3,9H6v8H3Z"></path></svg>
+                        <span>Buy Me a Coffee</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="options.js"></script>
+</body>
+</html>

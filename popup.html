@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LinkNest</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="popup-container">
+        <div class="popup-tabs">
+            <button id="tab-add" class="popup-tab-btn active">Add Link</button>
+            <button id="tab-search" class="popup-tab-btn">Search</button>
+        </div>
+
+        <div id="panel-add" class="popup-panel active">
+            <label for="page-title-input">Add Page As:</label>
+            <input type="text" id="page-title-input" placeholder="Loading title...">
+            
+            <label for="category-select">Select a Category:</label>
+            <select id="category-select"></select>
+            
+            <div class="add-category-wrapper">
+                <input type="text" id="new-category-input" placeholder="Or create a new one...">
+                <button id="add-category-button" title="Add Category">+</button>
+            </div>
+
+            <label for="note-input">Add a Note (optional):</label>
+            <textarea id="note-input" placeholder="Your notes about this link..."></textarea>
+
+            <button id="add-button">Add to LinkNest</button>
+            <hr>
+            <button id="open-manager-button">Open Full Manager</button>
+        </div>
+
+        <div id="panel-search" class="popup-panel">
+            <input type="search" id="popup-search-input" placeholder="Search title, URL, or notes...">
+            <div id="popup-search-results">
+                <p class="search-placeholder">Start typing to search your saved links.</p>
+            </div>
+        </div>
+    </div>
+    <script src="popup.js"></script>
+</body>
+</html>
