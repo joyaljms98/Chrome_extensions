@@ -32,7 +32,7 @@ LinkNest is a powerful browser extension designed to replace the native bookmark
 
 -----
 
-## Key Features <!-- # key-features -->
+## key-features <!-- # key-features -->
 
 LinkNest is packed with features designed for power users who demand organization and efficiency.
 
