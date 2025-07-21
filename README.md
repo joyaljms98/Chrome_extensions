@@ -9,12 +9,7 @@
 
 **A modern, feature-rich bookmark manager to save, categorize, and annotate your digital world.**
 
-[](https://www.google.com/search?q=https://github.com/joyal-james)
-[](https://www.google.com/search?q=LICENSE)
-[](https://www.google.com/search?q=https://github.com/joyal-james)
-[](https://www.google.com/search?q=https://www.buymeacoffee.com/joyaljames)
-
-\</div\>
+</div\>
 
 LinkNest is a powerful browser extension designed to replace the native bookmarking experience with a suite of advanced tools. It allows you to not only save links but to categorize them, add detailed notes with Markdown support, and manage your collection with an intuitive, customizable interface. Say goodbye to bookmark chaos and hello to organized, efficient Browse.
 
