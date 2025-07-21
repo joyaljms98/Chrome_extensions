@@ -1,9 +1,6 @@
 # Chrome_extensions
 Some useful extensions for browsers
 
-
-Here is a professional and extremely detailed README file for your LinkNest browser extension, built from the version history and feature set you've developed.
-
 -----
 
 \<div align="center"\>
