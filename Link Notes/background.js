@@ -1,8 +1,8 @@
 // Create a context menu item
 chrome.runtime.onInstalled.addListener(() => {
     chrome.contextMenus.create({
-        id: "linknest-add",
-        title: "Add to LinkNest",
+        id: "LinkNotes-add",
+        title: "Add to LinkNotes",
         contexts: ["link", "page"]
     });
 
@@ -25,7 +25,7 @@ chrome.runtime.onInstalled.addListener(() => {
 
 // Handle context menu clicks
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-    if (info.menuItemId === "linknest-add") {
+    if (info.menuItemId === "LinkNotes-add") {
         const urlToAdd = info.linkUrl || info.pageUrl;
 
         // When using the context menu, we don't know the category.

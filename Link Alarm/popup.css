@@ -1,0 +1,76 @@
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    width: 250px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+/* --- Dark Theme (Default) --- */
+body.theme-dark {
+    background-color: #203a43;
+    color: #fff;
+}
+body.theme-dark h1 {
+    color: #0ff; /* cyan accent */
+}
+body.theme-dark .action-btn {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+body.theme-dark .action-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+body.theme-dark .action-btn:active {
+    background-color: #0ff; /* cyan accent */
+    color: #000;
+}
+
+
+/* --- Light Theme --- */
+body.theme-light {
+    background-color: #e0eafc;
+    color: #222;
+}
+body.theme-light h1 {
+    color: #0D47A1; /* darkblue accent */
+}
+body.theme-light .action-btn {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #222;
+}
+body.theme-light .action-btn:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+body.theme-light .action-btn:active {
+    background-color: #0D47A1; /* darkblue accent */
+    color: #fff;
+}
+
+
+/* --- Base Styles --- */
+.container {
+    padding: 15px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 1.2rem;
+    margin: 0 0 15px 0;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.action-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.action-btn:last-child {
+    margin-bottom: 0;
+}

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>LinkNest - Bookmark Manager</title>
+    <title>LinkNotes - Bookmark Manager</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="options-page">
@@ -10,7 +10,7 @@
     <div class="header-left-section">
         <button id="toggle-left-panel-btn" title="Toggle Category Panel">☰</button>
         <div class="title-wrapper">
-            <h1>LinkNest Manager</h1>
+            <h1>LinkNotes Manager</h1>
             <div class="about-popover">
                 <p class="dev-name">Joyal James</p>
                 <p>Made with ❤️ from India</p>
@@ -27,9 +27,11 @@
              <div id="data-options-popup" class="popup-menu">
                 <button id="backup-btn">Backup Data</button>
                 <button id="restore-btn">Restore Data</button>
+                <button id="import-chrome-btn">Import from Chrome</button>
             </div>
         </div>
         <input type="file" id="restore-input" accept=".json" style="display: none;">
+        <input type="file" id="import-chrome-input" accept=".html" style="display: none;">
         <button id="toggle-theme-btn">Toggle Theme</button>
     </div>
     </header>
@@ -55,7 +57,7 @@
             </div>
             <ul id="category-list"></ul>
             <div class="panel-footer-left">
-                <button id="about-btn">About LinkNest</button>
+                <button id="about-btn">About LinkNotes</button>
             </div>
         </div>
 
@@ -109,7 +111,8 @@
     </div>
     <div id="restore-modal-overlay">
         <div class="modal-content">
-            <p>How would you like to restore from the backup file?</p>
+            <h3 id="restore-modal-title">Restore from Backup</h3>
+            <p>How would you like to apply the data from the file?</p>
             <div class="modal-buttons">
                 <button id="restore-merge-btn">Merge</button>
                 <button id="restore-overwrite-btn">Overwrite</button>
@@ -138,18 +141,19 @@
         <div class="modal-content about-modal-content">
             <button class="close-modal-btn" id="about-modal-close-btn" title="Close">&times;</button>
             <div class="about-modal-header">
-                <img src="icons/icon128.png" alt="LinkNest Logo" class="about-logo">
-                <h2>About LinkNest</h2>
+                <img src="icons/icon128.png" alt="LinkNotes Logo" class="about-logo">
+                <h2>About LinkNotes</h2>
             </div>
             <div class="about-modal-body">
                 <div class="developer-info">
                     <img src="https://avatars.githubusercontent.com/u/75773527?v=4" alt="Developer" class="profile-pic">
                     <h4>Developed by</h4><h3>Joyal James</h3>
-                    <p class="dev-bio">An MCA Student and a passionate developer from Kerala, India, creating tools to make the web a more organized place.</p>
+                    <p class="dev-bio">An MCA Student and a passionate developer<br> from Kerala, India, creating tools to make the web<br> a more organized place.</p>
                 </div>
                 <div class="project-details">
                     <p><strong>Version:</strong> 13.2</p>
                     <p><strong>Last Updated:</strong> July 21, 2025</p>
+                    <p>Visit My Github for more updates</p>
                 </div>
                 <div class="social-links">
                     <a href="https://github.com/joyaljms98" target="_blank" class="social-link github" title="View project on GitHub">

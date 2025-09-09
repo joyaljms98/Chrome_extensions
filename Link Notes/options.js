@@ -17,6 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const backupBtn = document.getElementById('backup-btn');
     const restoreBtn = document.getElementById('restore-btn');
     const restoreInput = document.getElementById('restore-input');
+    const importChromeBtn = document.getElementById('import-chrome-btn');
+    const importChromeInput = document.getElementById('import-chrome-input');
     const sortingControls = document.getElementById('sorting-controls');
     const sortSelect = document.getElementById('sort-select');
     const resizer = document.getElementById('resizer');
@@ -34,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const dataOptionsBtn = document.getElementById('data-options-btn');
     const dataOptionsPopup = document.getElementById('data-options-popup');
     const restoreModalOverlay = document.getElementById('restore-modal-overlay');
+    const restoreModalTitle = document.getElementById('restore-modal-title');
     const restoreMergeBtn = document.getElementById('restore-merge-btn');
     const restoreOverwriteBtn = document.getElementById('restore-overwrite-btn');
     const restoreCancelBtn = document.getElementById('restore-cancel-btn');
@@ -66,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         searchResults: [],
         selectionMode: false,
         selectedLinks: [], // a list of {url, category}
+        importData: null, // Holds data from restore/import file
     };
     let draggedItem = null;
     let dataLoaded = false;
@@ -123,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         state.bookmarks = bookmarks;
         if (migrationOccurred) {
-            console.log("LinkNest: Data structure updated for new features.");
+            console.log("LinkNotes: Data structure updated for new features.");
             saveData(); // Save the migrated structure
         }
     };
@@ -711,18 +715,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const blob = new Blob([JSON.stringify(dataToBackup, null, 2)], { type: 'application/json' });
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
-            a.download = `linknest_backup_${new Date().toISOString().slice(0, 10)}.json`;
+            a.download = `LinkNotes_backup_${new Date().toISOString().slice(0, 10)}.json`;
             a.click();
             URL.revokeObjectURL(a.href);
         });
     };
 
-    const mergeBookmarks = (restoredBookmarks) => {
-        for (const categoryName in restoredBookmarks) {
-             const restoredCategory = restoredBookmarks[categoryName];
-            const isOldFormat = Array.isArray(restoredCategory);
-            const linksToMerge = isOldFormat ? restoredCategory : restoredCategory.links;
+    const mergeBookmarks = (newBookmarks) => {
+        for (const categoryName in newBookmarks) {
+             const restoredCategory = newBookmarks[categoryName];
+            // This handles both old array format and new object format for categories
+            const linksToMerge = Array.isArray(restoredCategory) ? restoredCategory : restoredCategory.links;
             
+            // If category doesn't exist, add the whole category object
             if (!state.bookmarks[categoryName]) {
                 state.bookmarks[categoryName] = restoredCategory; 
                 continue;
@@ -730,17 +735,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const currentCategoryLinks = state.bookmarks[categoryName].links;
 
+            // Merge links within the existing category
             for (const restoredParent of linksToMerge) {
                 let currentParent = currentCategoryLinks.find(p => p.domain === restoredParent.domain);
 
+                // If domain group doesn't exist, add it
                 if (!currentParent) {
                     currentCategoryLinks.push(restoredParent);
                     continue;
                 }
 
+                // Add new sublinks to existing domain group
                 for (const restoredSublink of restoredParent.sublinks) {
                     const sublinkExists = currentParent.sublinks.some(s => s.url === restoredSublink.url);
                     if (!sublinkExists) {
+                        // Ensure timestamps are present
+                        if(!restoredSublink.timestamp) restoredSublink.timestamp = new Date().toISOString();
                         if(!restoredSublink.modifiedTimestamp) restoredSublink.modifiedTimestamp = restoredSublink.timestamp;
                         currentParent.sublinks.push(restoredSublink);
                     }
@@ -760,55 +770,145 @@ document.addEventListener('DOMContentLoaded', () => {
                 const restoredData = JSON.parse(e.target.result);
                 if (!restoredData.bookmarks) {
                     alert('Backup file seems to be invalid or empty.');
-                    event.target.value = null;
                     return;
                 }
-
-                restoreModalOverlay.style.display = 'flex';
-
-                const cleanupAndReset = () => {
-                    restoreModalOverlay.style.display = 'none';
-                    event.target.value = null;
-                };
-
-                const mergeHandler = () => {
-                    mergeBookmarks(restoredData.bookmarks);
-                    saveData();
-                    alert('Data merged successfully! The page will now refresh.');
-                    window.location.reload();
-                };
-
-                const overwriteHandler = () => {
-                    if (confirm('OVERWRITE: Are you sure you want to replace all current data with the backup? This cannot be undone.')) {
-                        state.bookmarks = restoredData.bookmarks || {};
-                        migrateData({ bookmarks: state.bookmarks });
-                        
-                        if (restoredData.settings) {
-                           state.settings = { ...state.settings, ...restoredData.settings };
-                           saveSettings();
-                        }
-                        saveData();
-                        alert('Data overwritten successfully! The page will now refresh.');
-                        window.location.reload();
-                    } else {
-                        alert('Restore cancelled.');
-                        cleanupAndReset();
-                    }
-                };
-
-                const cancelHandler = () => {
-                    alert('Restore cancelled.');
-                    cleanupAndReset();
-                };
                 
-                restoreMergeBtn.addEventListener('click', mergeHandler, { once: true });
-                restoreOverwriteBtn.addEventListener('click', overwriteHandler, { once: true });
-                restoreCancelBtn.addEventListener('click', cancelHandler, { once: true });
+                state.importData = restoredData;
+                restoreModalTitle.textContent = "Restore from Backup";
+                restoreModalOverlay.style.display = 'flex';
 
             } catch (error) {
                 console.error("Restore error:", error);
                 alert('Error reading or parsing the backup file.');
+            } finally {
                 event.target.value = null;
+            }
+        };
+        reader.readAsText(file);
+    };
+
+    // --- REWRITTEN Chrome Import ---
+    const parseChromeHtml = (htmlString) => {
+        const doc = new DOMParser().parseFromString(htmlString, "text/html");
+        const importedBookmarks = {};
+        const now = new Date().toISOString();
+    
+        const addBookmark = (categoryName, linkElement) => {
+            if (!categoryName || !linkElement) return;
+    
+            const url = linkElement.href;
+            const title = linkElement.textContent.trim();
+            if (!url || url.startsWith("javascript:")) return;
+    
+            // Ensure the category exists in the final object
+            if (!importedBookmarks[categoryName]) {
+                importedBookmarks[categoryName] = {
+                    links: [],
+                    created: now,
+                    modified: now,
+                };
+            }
+    
+            try {
+                const parsedUrl = new URL(url);
+                const domain = parsedUrl.hostname;
+    
+                let parent = importedBookmarks[categoryName].links.find((p) => p.domain === domain);
+                if (!parent) {
+                    parent = {
+                        domain: domain,
+                        favicon: `https://www.google.com/s2/favicons?domain=${domain}&sz=32`,
+                        sublinks: [],
+                    };
+                    importedBookmarks[categoryName].links.push(parent);
+                }
+    
+                if (!parent.sublinks.some((s) => s.url === url)) {
+                    parent.sublinks.push({
+                        url: url,
+                        title: title || url,
+                        timestamp: linkElement.getAttribute("add_date") ? new Date(parseInt(linkElement.getAttribute("add_date")) * 1000).toISOString() : now,
+                        modifiedTimestamp: linkElement.getAttribute("last_modified") ? new Date(parseInt(linkElement.getAttribute("last_modified")) * 1000).toISOString() : now,
+                        notes: "",
+                    });
+                }
+            } catch (e) {
+                console.warn(`Skipping invalid URL during import: ${url}`);
+            }
+        };
+    
+        const processDl = (dlElement, currentCategory) => {
+            if (!dlElement) return;
+    
+            // Iterate over the direct children of the DL element
+            for (const child of dlElement.children) {
+                // Handle the <p> tag wrapper that Chrome sometimes adds
+                if (child.tagName.toLowerCase() === 'p') {
+                    processDl(child, currentCategory); // Recurse into the <P> tag
+                    continue;
+                }
+                
+                if (child.tagName.toLowerCase() !== 'dt') {
+                    continue;
+                }
+    
+                const h3 = child.querySelector('h3');
+                const a = child.querySelector('a');
+                
+                if (h3) {
+                    // It's a folder. The links are in the next sibling, which is a DL.
+                    const folderName = h3.textContent.trim();
+                    const nextDl = child.nextElementSibling;
+                    if (folderName && nextDl && nextDl.tagName.toLowerCase() === 'dl') {
+                        // Create a nested category name, e.g., "Work/Projects"
+                        const newCategoryName = currentCategory ? `${currentCategory}/${folderName}` : folderName;
+                        processDl(nextDl, newCategoryName);
+                    }
+                } else if (a && currentCategory) {
+                    // It's a bookmark. Add it to the current category.
+                    addBookmark(currentCategory, a);
+                }
+            }
+        };
+    
+        // Find the first DL after the main H1 title
+        const firstDl = doc.querySelector('h1 + dl');
+        if (firstDl) {
+            // Start with a default category for top-level bookmarks (like those on the bookmarks bar)
+            processDl(firstDl, "Imported"); 
+        } else {
+            // Fallback if the H1 is missing
+            const bodyDl = doc.body.querySelector('dl');
+            if (bodyDl) {
+                processDl(bodyDl, "Imported");
+            }
+        }
+    
+        return { bookmarks: importedBookmarks };
+    };
+
+    const handleChromeImport = (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const parsedData = parseChromeHtml(e.target.result);
+                if (Object.keys(parsedData.bookmarks).length === 0) {
+                     alert('Could not find any valid bookmark folders in the selected file.');
+                     return;
+                }
+
+                state.importData = parsedData;
+                restoreModalTitle.textContent = "Import from Chrome";
+                restoreModalOverlay.style.display = 'flex';
+
+            } catch (error) {
+                console.error("Chrome Import error:", error);
+                alert('Error reading or parsing the HTML file.');
+            } finally {
+                event.target.value = null; // Reset file input
             }
         };
         reader.readAsText(file);
@@ -1065,6 +1165,45 @@ document.addEventListener('DOMContentLoaded', () => {
     backupBtn.addEventListener('click', handleBackup);
     restoreBtn.addEventListener('click', () => restoreInput.click());
     restoreInput.addEventListener('change', handleRestore);
+    importChromeBtn.addEventListener('click', () => importChromeInput.click());
+    importChromeInput.addEventListener('change', handleChromeImport);
+
+
+    // Modal Button Listeners
+    restoreMergeBtn.addEventListener('click', () => {
+        if (!state.importData) return;
+        mergeBookmarks(state.importData.bookmarks);
+        saveData();
+        alert('Data merged successfully! The page will now refresh.');
+        window.location.reload();
+    });
+
+    restoreOverwriteBtn.addEventListener('click', () => {
+        if (!state.importData) return;
+        if (confirm('OVERWRITE: Are you sure you want to replace all current data with the file content? This cannot be undone.')) {
+            state.bookmarks = state.importData.bookmarks || {};
+            // Run migration on the newly imported data to ensure its structure is up-to-date
+            migrateData({ bookmarks: state.bookmarks });
+            
+            // Apply settings from backup if they exist
+            if (state.importData.settings) {
+                state.settings = { ...state.settings, ...state.importData.settings };
+                saveSettings();
+            }
+            saveData();
+            alert('Data overwritten successfully! The page will now refresh.');
+            window.location.reload();
+        } else {
+            alert('Action cancelled.');
+            restoreModalOverlay.style.display = 'none';
+        }
+    });
+
+    restoreCancelBtn.addEventListener('click', () => {
+        state.importData = null;
+        restoreModalOverlay.style.display = 'none';
+    });
+
 
     searchBtn.addEventListener('click', () => performSearch(searchInput.value));
     searchInput.addEventListener('keyup', (e) => {
@@ -1299,7 +1438,7 @@ document.addEventListener('DOMContentLoaded', () => {
     chrome.storage.onChanged.addListener((changes, namespace) => {
         // Check if the 'bookmarks' data has changed in sync storage
         if (namespace === 'sync' && changes.bookmarks) {
-            console.log('LinkNest Manager: Detected a change in bookmarks, reloading view.');
+            console.log('LinkNotes Manager: Detected a change in bookmarks, reloading view.');
             
             // Simply call your existing loadData() function to refresh the entire page
             loadData();

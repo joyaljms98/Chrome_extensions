@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "LinkNest - Bookmark Manager",
+  "name": "LinkNotes - Bookmark Manager",
   "version": "1.0",
   "description": "A browser extension to save, categorize, and annotate website links.",
   "permissions": [

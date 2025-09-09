@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 categorySelect.appendChild(option);
             });
             addButton.disabled = false;
-            addButton.textContent = "Add to LinkNest";
+            addButton.textContent = "Add to LinkNotes";
         } else {
             const option = document.createElement('option');
             option.textContent = "Create a category first";
@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const gotoBtn = document.createElement('button');
             gotoBtn.className = 'popup-goto-btn';
             gotoBtn.textContent = 'Go to Location';
-            gotoBtn.title = 'Open this link in the LinkNest Manager';
+            gotoBtn.title = 'Open this link in the LinkNotes Manager';
             gotoBtn.onclick = () => {
                 chrome.runtime.openOptionsPage(() => {
                     setTimeout(() => {
@@ -197,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
         for (const categoryName in bookmarks) {
             // Check if a category is still an array (the old format)
             if (Array.isArray(bookmarks[categoryName])) {
-                console.log(`LinkNest Popup: Migrating old category '${categoryName}'.`);
+                console.log(`LinkNotes Popup: Migrating old category '${categoryName}'.`);
                 const linksArray = bookmarks[categoryName];
                 const now = new Date().toISOString();
                 

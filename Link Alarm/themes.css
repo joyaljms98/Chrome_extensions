@@ -1,0 +1,203 @@
+/* themes.css */
+
+/* --- Background Grid --- */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* The grid color is now a single variable */
+    background-image:
+        linear-gradient(var(--grid-line-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line-color) 1px, transparent 1px);
+    background-size: 50px 50px;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity var(--transition-speed) ease;
+}
+body.grid-enabled::before {
+    opacity: 1;
+}
+
+/* --- Theme Definitions --- */
+body.gradient-light, body.pure-white {
+    /* For light themes, use the light version of the accent grid color */
+    --grid-line-color: var(--grid-line-color-light);
+}
+body.gradient-dark, body.pure-black {
+    /* For dark themes, use the dark version of the accent grid color */
+    --grid-line-color: var(--grid-line-color-dark);
+}
+
+body.gradient-light {
+    background: linear-gradient(135deg, #e0eafc, #cfdef3);
+    color: #222;
+}
+body.gradient-dark {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: #fff;
+}
+body.pure-white {
+    background-color: #ffffff;
+    color: #000000;
+}
+body.pure-black {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+/* Accent Colors & Associated Grid Colors */
+body[data-accent="blue"] {
+    --accent-color: #0ff;
+    --accent-rgb: 0, 255, 255;
+    --grid-line-color-light: rgba(0, 255, 255, 0.4);
+    --grid-line-color-dark: rgba(0, 255, 255, 0.1);
+}
+body[data-accent="darkblue"] {
+    --accent-color: #0D47A1;
+    --accent-rgb: 13, 71, 161;
+    --grid-line-color-light: rgba(13, 71, 161, 0.1);
+    --grid-line-color-dark: rgba(13, 71, 161, 0.2);
+}
+body[data-accent="purple"] {
+    --accent-color: #9f50ff;
+    --accent-rgb: 159, 80, 255;
+    --grid-line-color-light: rgba(159, 80, 255, 0.2);
+    --grid-line-color-dark: rgba(159, 80, 255, 0.1);
+}
+body[data-accent="green"] {
+    --accent-color: #4caf50;
+    --accent-rgb: 76, 175, 80;
+    --grid-line-color-light: rgba(76, 175, 80, 0.2);
+    --grid-line-color-dark: rgba(76, 175, 80, 0.1);
+}
+body[data-accent="orange"] {
+    --accent-color: #ff9800;
+    --accent-rgb: 255, 152, 0;
+    --grid-line-color-light: rgba(255, 152, 0, 0.2);
+    --grid-line-color-dark: rgba(255, 152, 0, 0.1);
+}
+body[data-accent="pink"] {
+    --accent-color: #e91e63;
+    --accent-rgb: 233, 30, 99;
+    --grid-line-color-light: rgba(233, 30, 99, 0.2);
+    --grid-line-color-dark: rgba(233, 30, 99, 0.1);
+}
+body[data-accent="teal"] {
+    --accent-color: #009688;
+    --accent-rgb: 0, 150, 136;
+    --grid-line-color-light: rgba(0, 150, 136, 0.2);
+    --grid-line-color-dark: rgba(0, 150, 136, 0.1);
+}
+body[data-accent="red"] {
+    --accent-color: #f44336;
+    --accent-rgb: 244, 67, 54;
+    --grid-line-color-light: rgba(244, 67, 54, 0.2);
+    --grid-line-color-dark: rgba(244, 67, 54, 0.1);
+}
+
+
+/* Theme-dependent Clock Styles */
+.gradient-dark .clock, .pure-black .clock {
+    text-shadow: 0 0 15px var(--accent-color), 0 0 25px rgba(0, 0, 0, 0.3);
+}
+.gradient-light .clock, .pure-white .clock {
+    text-shadow: 0 0 15px var(--accent-color), 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Theme-dependent Side Menu Styles */
+.gradient-dark .side-menu, .pure-black .side-menu {
+    background: rgba(26, 26, 46, 0.7);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+.gradient-dark .side-menu.right, .pure-black .side-menu.right {
+    border-right: none;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+.gradient-light .side-menu, .pure-white .side-menu {
+    background: rgba(253, 253, 253, 0.7);
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+.gradient-light .side-menu.right, .pure-white .side-menu.right {
+    border-right: none;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+}
+.gradient-light .side-menu-footer, .pure-white .side-menu-footer {
+    border-top-color: rgba(0, 0, 0, 0.1);
+}
+.gradient-light .menu-title, .pure-white .menu-title {
+    border-bottom-color: rgba(0, 0, 0, 0.1);
+}
+.gradient-light .menu-item:hover, .pure-white .menu-item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+.gradient-light .menu-search-input, .pure-white .menu-search-input {
+    border-color: rgba(0,0,0,0.1);
+    background-color: rgba(0,0,0,0.05);
+}
+
+/* Theme-dependent Calendar Styles */
+.gradient-light .calendar-day:not(.other-month):hover, .pure-white .calendar-day:not(.other-month):hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Theme-dependent Alarm List Styles */
+.gradient-light .full-alarm-item, .pure-white .full-alarm-item {
+    background-color: rgba(0, 0, 0, 0.04);
+}
+
+/* Theme-dependent Category Filter Styles */
+.gradient-light .category-filter button:hover, .pure-white .category-filter button:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Theme-dependent Task Card Styles */
+.gradient-dark .task-card, .pure-black .task-card { background: rgba(255, 255, 255, 0.08); }
+.gradient-light .task-card, .pure-white .task-card { background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(0, 0, 0, 0.1); }
+.gradient-light .task-card-advanced, .pure-white .task-card-advanced {
+    border-top-color: rgba(0,0,0,0.1);
+}
+
+/* Theme-dependent Shortcut Styles */
+.gradient-dark .shortcut-item, .pure-black .shortcut-item { background: rgba(255, 255, 255, 0.1); color: #fff; }
+.gradient-light .shortcut-item, .pure-white .shortcut-item { background: rgba(0, 0, 0, 0.05); color: #000; border-color: rgba(0,0,0,0.08); }
+
+/* Theme-dependent Modal Styles */
+.gradient-dark .modal-content { background: rgba(26, 26, 46, 0.8); box-shadow: 0 0 40px rgba(0,0,0,0.5); }
+.gradient-light .modal-content, .pure-white .modal-content { background: rgba(253, 253, 253, 0.8); box-shadow: 0 5px 25px rgba(0,0,0,0.2); border-color: rgba(0,0,0,0.1); }
+.gradient-dark #customRecurrenceOptions,
+.pure-black #customRecurrenceOptions,
+.gradient-dark #recurrenceEndOptions,
+.pure-black #recurrenceEndOptions {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+.gradient-light #customRecurrenceOptions, .pure-white #customRecurrenceOptions,
+.gradient-light #recurrenceEndOptions, .pure-white #recurrenceEndOptions {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Theme-dependent Trash Styles */
+.gradient-light .trash-item, .pure-white .trash-item { background-color: rgba(0, 0, 0, 0.04); }
+
+/* Theme-dependent Settings Styles */
+.gradient-light .setting-item, .pure-white .setting-item {
+    border-bottom-color: rgba(0,0,0,0.1);
+}
+.gradient-light .segmented-control, .pure-white .segmented-control { background-color: rgba(0,0,0,0.1); }
+.gradient-light .setting-item-group input[type="time"], .pure-white .setting-item-group input[type="time"] { background-color: rgba(255,255,255,0.5); border-color: rgba(0,0,0,0.2); }
+.gradient-light .accent-btn.active, .pure-white .accent-btn.active { border-color: #000; }
+
+/* Theme-dependent Shortcut Manager Styles */
+.gradient-light .manager-list, .pure-white .manager-list { background: rgba(0,0,0,0.04); }
+
+/* Theme-dependent About Modal Styles */
+.gradient-light .project-details, .pure-white .project-details { background: rgba(0,0,0,0.04); }
+.gradient-light .social-link, .pure-white .social-link { background-color: rgba(0,0,0,0.05); }
+.gradient-light .social-link:hover, .pure-white .social-link:hover { background-color: rgba(0,0,0,0.1); }
+
+/* Theme-dependent Add Task Card Styles */
+.gradient-light .add-task-card, .pure-white .add-task-card {
+    border: 2px dashed rgba(0, 0, 0, 0.2);
+}

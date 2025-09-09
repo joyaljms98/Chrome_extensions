@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Link Alarm</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="themes.css" />
+</head>
+<body>
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <div id="sideMenu" class="side-menu">
+        <div class="side-menu-main">
+            <h2 class="menu-title">Menu</h2>
+            <div class="menu-section">
+                <h3 class="menu-section-title">Categories</h3>
+                <input type="search" id="categorySearch" class="menu-search-input" placeholder="Search categories...">
+                <div id="filterBar" class="category-filter"></div>
+            </div>
+        </div>
+
+        <div class="side-menu-footer">
+            <div id="themeToggle" class="menu-item theme-toggle-item" title="Cycle Theme (Light/Dark/Auto)">
+                <span id="theme-icon"></span>
+                <span id="theme-text"></span>
+            </div>
+            <div id="appearanceSettingsBtn" class="menu-item" title="Open Appearance Settings">
+                <span>🎨</span> Appearance
+            </div>
+            <div id="settingsBtn" class="menu-item" title="Open General Settings">
+                <span>⚙️</span> Settings
+            </div>
+            <div id="trashBtn" class="menu-item" title="Open Trash">
+                <span>🗑️</span> Trash
+            </div>
+            <div id="aboutBtn" class="menu-item" title="About Link Alarm">
+                <span>ℹ️</span> About
+            </div>
+        </div>
+    </div>
+
+    <div id="alarmListMenu" class="side-menu right">
+        <div class="side-menu-main">
+            <div id="alarm-calendar-container">
+                <div id="calendar-header">
+                    <button class="calendar-nav" id="calendar-prev-month">‹</button>
+                    <div id="calendar-nav-center">
+                        <h3 id="calendar-month-year">July 2025</h3>
+                        <div id="calendar-goto-ui" class="hidden">
+                            <select id="calendar-goto-month"></select>
+                            <select id="calendar-goto-year"></select>
+                            <button id="calendar-goto-btn">Go</button>
+                        </div>
+                    </div>
+                    <button class="calendar-nav" id="calendar-next-month">›</button>
+                    <button id="calendar-reset-btn" class="calendar-nav hidden" title="Reset to Today">Today</button>
+                </div>
+                <div id="calendar-weekdays"></div>
+                <div id="calendar-days"></div>
+            </div>
+            <input type="search" id="alarmSearchInput" class="menu-search-input" placeholder="Search alarms...">
+            <h3 id="alarm-list-title">All Alarms</h3>
+            <div id="fullAlarmList" class="full-alarm-list">
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div id="menuToggleBtn" class="header-btn" title="Toggle Menu">☰</div>
+            <div id="alarmListToggleBtn" class="header-btn" title="Toggle All Alarms List">📅</div>
+        </div>
+        
+        <div class="clock-container">
+            <div class="clock" id="clock">00:00</div>
+            <div class="date" id="date"></div>
+        </div>
+
+        <div class="carousel-container">
+            <button id="prevTask" class="carousel-arrow">‹</button>
+            <div class="task-carousel" id="taskCarousel"></div>
+            <button id="nextTask" class="carousel-arrow">›</button>
+        </div>
+        
+        <div class="shortcuts-wrapper">
+            <button id="scrollShortcutLeft" class="shortcut-arrow hidden">‹</button>
+            <div class="shortcuts" id="shortcuts"></div>
+            <button id="scrollShortcutRight" class="shortcut-arrow hidden">›</button>
+        </div>
+    </div>
+
+    <div id="aboutModal" class="modal hidden">
+        <div class="modal-content about-modal-content">
+            <button class="close-modal-btn" id="about-modal-close-btn" title="Close">&times;</button>
+            <div class="about-modal-header">
+                <img src="assets/icons/icon128.png" alt="Link Alarm Logo" class="about-logo">
+                <h2>About Link Alarm</h2>
+            </div>
+            <div class="about-modal-body">
+                <div class="developer-info">
+                    <img src="https://avatars.githubusercontent.com/u/75773527?v=4" alt="Developer" class="profile-pic">
+                    <h4>Developed by</h4>
+                    <h3>Joyal James</h3>
+                    <p class="dev-bio">An MCA Student and a passionate developer<br> from Kerala, India, creating tools to make the web<br> a more organized place.</p>
+                </div>
+                <div class="project-details">
+                    <p><strong>Version:</strong> 1.1</p>
+                    <p><strong>Last Updated:</strong> July 28, 2025</p>
+                    <p>Visit my GitHub for more updates.</p>
+                </div>
+                <div class="social-links">
+                    <a href="https://github.com/joyaljms98" target="_blank" class="social-link github" title="View project on GitHub">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg>
+                        <span>GitHub</span>
+                    </a>
+                    <a href="https://buymeacoffee.com/joyaljms98i" target="_blank" class="social-link bmc" title="Support the developer!">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.34,5.82a1,1,0,0,0-1.07-.13A8.44,8.44,0,0,1,16,6a1,1,0,0,0-1,1,6.56,6.56,0,0,1-2.7,5.54,1,1,0,0,0-.3.72V19a1,1,0,0,0,1,1h4a1,1,0,0,0,1-1V13.26a1,1,0,0,0-.3-.72A6.56,6.56,0,0,1,15,7a1,1,0,0,0-1-1,8.44,8.44,0,0,1-3.27-.31,1,1,0,0,0-1.07.13,1,1,0,0,0-.33.74,1,1,0,0,0,1,.84,10.2,10.2,0,0,0,3.54.43,8.56,8.56,0,0,0,3.34-.43,1,1,0,0,0,1-.84A1,1,0,0,0,20.34,5.82ZM2,19H7a1,1,0,0,0,1-1V8A1,1,0,0,0,7,7H2A1,1,0,0,0,1,8V18A1,1,0,0,0,2,19ZM3,9H6v8H3Z"></path></svg>
+                        <span>Buy Me a Coffee</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="trashModal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Deleted Tasks</h2>
+            <div id="trashList" class="trash-list">
+                </div>
+            <div class="modal-actions">
+                <button id="clearTrashBtn" class="delete-btn">Clear All</button>
+                <button id="closeTrashBtn">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="confirmModal" class="modal hidden">
+        <div class="modal-content confirm-modal-content">
+            <p id="confirmMessage">Are you sure?</p>
+            <div class="modal-actions">
+                <button id="cancelConfirmBtn">Cancel</button>
+                <button id="confirmBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="appearanceSettingsModal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Appearance Settings</h2>
+            <div class="setting-item">
+                <label>Theme Mode</label>
+                <div class="segmented-control" id="themeModeSelector">
+                    <button data-mode="light">Light</button>
+                    <button data-mode="dark">Dark</button>
+                    <button data-mode="auto" class="active">Auto</button>
+                </div>
+            </div>
+            <div id="autoThemeSettings" class="setting-item-group hidden">
+                 <div class="setting-item">
+                     <label for="autoDarkStart">Dark Mode Starts</label>
+                     <input type="time" id="autoDarkStart">
+                 </div>
+                 <div class="setting-item">
+                     <label for="autoDarkEnd">Dark Mode Ends</label>
+                     <input type="time" id="autoDarkEnd">
+                 </div>
+                 <div class="setting-item">
+                     <label>Auto Light Theme</label>
+                     <div class="segmented-control" id="autoLightThemeSelector">
+                         <button data-theme="gradient-light">Gradient</button>
+                         <button data-theme="pure-white">White</button>
+                     </div>
+                 </div>
+                 <div class="setting-item">
+                     <label>Auto Dark Theme</label>
+                     <div class="segmented-control" id="autoDarkThemeSelector">
+                         <button data-theme="gradient-dark">Gradient</button>
+                         <button data-theme="pure-black">Black</button>
+                     </div>
+                 </div>
+            </div>
+            <div class="setting-item">
+                <label for="gridToggle">Show Background Grid</label>
+                <label class="switch">
+                    <input type="checkbox" id="gridToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="setting-item">
+                <label>Accent Color</label>
+                <div class="accent-picker">
+                    <button class="accent-btn" data-accent="blue" style="--accent-rgb: 0, 255, 255; background-color: #0ff;" title="Cyan"></button>
+                    <button class="accent-btn" data-accent="darkblue" style="--accent-rgb: 13, 71, 161; background-color: #0D47A1;" title="Dark Blue"></button>
+                    <button class="accent-btn" data-accent="purple" style="--accent-rgb: 159, 80, 255; background-color: #9f50ff;" title="Purple"></button>
+                    <button class="accent-btn" data-accent="green" style="--accent-rgb: 76, 175, 80; background-color: #4caf50;" title="Green"></button>
+                    <button class="accent-btn" data-accent="orange" style="--accent-rgb: 255, 152, 0; background-color: #ff9800;" title="Orange"></button>
+                    <button class="accent-btn" data-accent="pink" style="--accent-rgb: 233, 30, 99; background-color: #e91e63;" title="Pink"></button>
+                    <button class="accent-btn" data-accent="teal" style="--accent-rgb: 0, 150, 136; background-color: #009688;" title="Teal"></button>
+                    <button class="accent-btn" data-accent="red" style="--accent-rgb: 244, 67, 54; background-color: #f44336;" title="Red"></button>
+                </div>
+            </div>
+            <div class="setting-item">
+                <label for="shortcutScaleSlider">Shortcut Icon Size</label>
+                <input type="range" id="shortcutScaleSlider" min="0.7" max="1.3" step="0.05">
+            </div>
+            <div class="setting-item">
+                <label for="taskCardScaleSlider">Task Card Size</label>
+                <input type="range" id="taskCardScaleSlider" min="0.8" max="1.1" step="0.05">
+            </div>
+            <button id="closeAppearanceSettings" class="close-modal-btn">Close</button>
+        </div>
+    </div>
+
+    <div id="settingsModal" class="modal hidden">
+        <div class="modal-content">
+            <h2>General Settings</h2>
+            <div class="setting-item">
+                <label for="clockFormatToggle">Clock Format</label>
+                <button id="clockFormatToggle">12H / 24H</button>
+            </div>
+            <div class="setting-item">
+                <label>Manage Shortcuts</label>
+                <button id="manageShortcutsBtn">✏️ Open Manager</button>
+            </div>
+             <div class="setting-item">
+                <label>Data Management</label>
+                <div class="data-buttons">
+                    <button id="exportBtn">⬇️ Backup</button>
+                    <label for="importFile" class="import-label">⬆️ Restore</label>
+                    <input type="file" id="importFile" accept=".json" style="display:none;"/>
+                </div>
+            </div>
+            <button id="closeSettings" class="close-modal-btn">Close</button>
+        </div>
+    </div>
+
+    <div id="taskModal" class="modal hidden">
+        <div class="modal-content">
+            <button type="button" class="close-modal-btn" id="closeTaskModalBtn" title="Close">&times;</button>
+            <h2 id="modalTitle">Add Task</h2>
+            <form id="taskForm">
+                <input type="hidden" id="taskId" />
+
+                <label for="taskTitle">Title:</label>
+                <input type="text" id="taskTitle" required />
+
+                <label for="taskNotes">Link or Notes:</label>
+                <textarea id="taskNotes" rows="2"></textarea>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="taskFrom">From (HH:MM):</label>
+                        <input type="time" id="taskFrom" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="taskTo">To (HH:MM):</label>
+                        <input type="time" id="taskTo" required />
+                    </div>
+                </div>
+                
+                <label for="taskDate">Date:</label>
+                <input type="date" id="taskDate" />
+
+                <label for="taskRecurring">Recurrence:</label>
+                <select id="taskRecurring">
+                    <option value="none">One-time</option>
+                    <option value="daily">Daily</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="yearly">Yearly</option>
+                    <option value="custom">Custom</option>
+                </select>
+                
+                <div id="customRecurrenceOptions" class="hidden">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="customRecurValue">Recur every:</label>
+                            <input type="number" id="customRecurValue" min="1" value="1" />
+                        </div>
+                        <div class="form-group">
+                            <label for="customRecurUnit">Unit:</label>
+                            <select id="customRecurUnit">
+                                <option value="days">Day(s)</option>
+                                <option value="weeks">Week(s)</option>
+                                <option value="months">Month(s)</option>
+                                <option value="years">Year(s)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="recurrenceEndOptions" class="hidden">
+                    <label for="recurrenceEndDate">End date (optional):</label>
+                    <input type="date" id="recurrenceEndDate" />
+                    <p id="dateError" class="error-message" style="display: none;"></p>                    
+                </div>
+
+                <label for="taskCategory">Category:</label>
+                <input type="text" id="taskCategory" list="categoryOptions" placeholder="e.g., Study, Break" />
+                <datalist id="categoryOptions"></datalist>
+
+                <div class="setting-item form-setting-item">
+                     <label for="taskNotification">Enable Notification</label>
+                     <label class="switch">
+                         <input type="checkbox" id="taskNotification" checked>
+                         <span class="slider"></span>
+                     </label>
+                </div>
+
+                <div class="setting-item form-setting-item">
+                     <label for="taskRemindersToggle">Remind Me</label>
+                     <label class="switch">
+                         <input type="checkbox" id="taskRemindersToggle">
+                         <span class="slider"></span>
+                     </label>
+                </div>
+
+                <div id="remindersContainer" class="hidden">
+                    <div id="reminderList"></div>
+                    <button type="button" id="addReminderBtn" class="add-btn">＋ Add Reminder</button>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="submit">Save Task</button>
+                    <button type="button" id="deleteTask" class="delete-btn hidden">Delete</button>
+                    <button type="button" id="cancelModal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="shortcutModal" class="modal hidden">
+        <div class="modal-content">
+            <h2 id="shortcutModalTitle">Add Shortcut</h2>
+            <form id="shortcutForm">
+                <input type="hidden" id="shortcutIndex" />
+                <label for="shortcutName">Name:</label>
+                <input type="text" id="shortcutName" required />
+                <label for="shortcutUrl">URL:</label>
+                <input type="url" id="shortcutUrl" placeholder="https://example.com" required />
+                <div class="modal-actions">
+                    <button type="submit" id="saveShortcutBtn">Save</button>
+                    <button type="button" id="cancelShortcutModal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="shortcutManagerModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="manager-header">
+                 <h2>Manage Shortcuts</h2>
+                 <input type="search" id="shortcutSearchInput" placeholder="Search shortcuts..." />
+            </div>
+            <div id="managerModalList" class="manager-list">
+                </div>
+            <div class="modal-actions">
+                 <button type="button" id="addNewShortcutFromManagerBtn">＋ Add New Shortcut</button>
+                 <button type="button" id="closeShortcutManagerBtn" style="margin-left: auto;">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="index.js" type="module"></script>
+</body>
+</html>
